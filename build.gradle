@@ -1,18 +1,18 @@
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath 'org.junit.platform:junit-platform-gradle-plugin:1.1.0'
+        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.7'
+        classpath 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.15'
     }
-}
-
-plugins {
-    id 'net.ltgt.apt' version '0.15'
 }
 
 apply plugin: 'java'
 apply plugin: 'org.junit.platform.gradle.plugin'
+apply plugin: 'org.asciidoctor.convert'
 
 repositories {
     mavenCentral()
@@ -22,8 +22,13 @@ repositories {
 ext.junitJupiterVersion = '5.1.0'
 ext.lombokVersion = '1.16.20'
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 dependencies {
     compile "org.slf4j:slf4j-api:1.7.25"
+    compile "org.freemarker:freemarker:2.3.27-incubating"
+    compile "com.predic8:soa-model-core:1.6.0"
 
     testCompile "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
@@ -31,4 +36,13 @@ dependencies {
 
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+}
+
+asciidoctor {
+    sourceDir = file( 'docs' )
+    sources {
+        include 'main.adoc'
+    }
+    outputDir = file( 'build/docs' )
+    backends 'html5', 'pdf'
 }
