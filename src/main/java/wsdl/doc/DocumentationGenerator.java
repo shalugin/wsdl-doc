@@ -43,7 +43,7 @@ public class DocumentationGenerator {
             Definitions defs = parser.parse(wsdlUrl);
             context.put("defs", defs);
 
-            Template template = configuration.getTemplate("service.ftlh");
+            Template template = configuration.getTemplate("wsdl.ftlh");
             template.process(context, writer);
         }
     }

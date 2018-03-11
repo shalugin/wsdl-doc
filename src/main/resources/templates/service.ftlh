@@ -1,11 +1,12 @@
-= ${defs.documentation!}
-v${serviceVersion}, ${generatedTime}
-:toc:
-
-<#list defs.services as service>
 == ${service.name}
 
-Namespace: ${defs.targetNamespace!}
+Namespace:: ${service.definitions.targetNamespace!}
+
+Description:: ${service.definitions.documentation.content!}
+
+Style:: Document
+
+See Also:: Methods | Complex Types | Simple Types | Elements | Attributes
 
 .Ports
 |===
@@ -15,12 +16,21 @@ Namespace: ${defs.targetNamespace!}
 |${port.binding.name}
 |${port.address.location}
     </#list>
-</#list>
 |===
 
-== Services
-
 === Methods
+
+|===
+|Name |Description
+    <#list service.definitions.operations as operation>
+|${operation.name}
+|<#if operation.documentation??>${operation.documentation.name!}</#if>
+    </#list>
+|===
+
+    <#list service.definitions.operations as operation>
+        <#include "method.ftlh"/>
+    </#list>
 
 === Complex types
 
@@ -29,4 +39,3 @@ Namespace: ${defs.targetNamespace!}
 === Elements
 
 === Attributes
-
